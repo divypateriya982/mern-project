@@ -1,7 +1,9 @@
 import { useState } from 'react';
 import dp from '../assets/user_dp.jpg'
+import { useNavigate } from 'react-router-dom'
 
-const Signup = () => {
+const SignUp = () => {
+    const navigate = useNavigate();
 
     const initialState = {
         firstName: "",
@@ -78,7 +80,7 @@ const Signup = () => {
                 </form>
                 <h3 className="text-center text-xs sm:text-sm text-emerald-950/80 font-normal">
                     Already have an account?{" "}
-                    <span className="text-[#047857] hover:text-[#065F46] font-semibold cursor-pointer hover:underline transition-colors duration-200">
+                    <span onClick={() => navigate('/signin')} className="text-[#047857] hover:text-[#065F46] font-semibold cursor-pointer hover:underline transition-colors duration-200">
                         Sign In
                     </span>
                 </h3>
@@ -87,4 +89,4 @@ const Signup = () => {
     );
 };
 
-export default Signup;
+export default SignUp;

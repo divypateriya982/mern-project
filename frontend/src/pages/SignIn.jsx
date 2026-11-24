@@ -1,6 +1,8 @@
 import { useState } from "react"
+import { useNavigate } from "react-router-dom";
 
-const Login = () => {
+const SignIn = () => {
+    const navigate = useNavigate();
 
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
@@ -36,7 +38,7 @@ const Login = () => {
                 </form>
                 <h3 className="text-center text-xs sm:text-sm text-emerald-950/80 font-normal">
                     Don't have an account?{" "}
-                    <span className="text-[#047857] hover:text-[#065F46] font-semibold cursor-pointer hover:underline transition-colors duration-200">
+                    <span onClick={() => navigate('/signup')} className="text-[#047857] hover:text-[#065F46] font-semibold cursor-pointer hover:underline transition-colors duration-200">
                         Sign Up
                     </span>
                 </h3>
@@ -45,4 +47,4 @@ const Login = () => {
     )
 }
 
-export default Login
+export default SignIn
