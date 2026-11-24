@@ -5,13 +5,14 @@ const Signup = () => {
         <div className="min-h-screen w-full bg-[#ECFDF5] flex items-center justify-center p-4 sm:p-6 md:p-8">
             <div className="w-full max-w-md sm:max-w-125 bg-[#FFFFFF] rounded-2xl shadow-sm flex items-center justify-center flex-col gap-6 py-8 px-6 sm:py-10 sm:px-10">
                 <h1 className="text-[#064E3B] font-bold text-2xl sm:text-3xl text-center">Sign Up</h1>
-                <div className="w-24 h-24 sm:w-28 sm:h-28 rounded-full border-2 border-gray-400 overflow-hidden relative shrink-0">
-                    <img className="w-full h-full object-cover" src={dp} alt="User profile picture" />
-                    <div className="absolute inset-0 bg-gray-600/50 flex items-center justify-center text-white text-2xl font-medium cursor-pointer opacity-0 hover:opacity-100 transition-opacity duration-200">
-                        +
-                    </div>
-                </div>
+
                 <form className="w-full flex flex-col gap-4">
+                    <div className="w-24 h-24 sm:w-28 sm:h-28 rounded-full border-2 border-gray-400 overflow-hidden relative shrink-0">
+                        <img className="w-full h-full object-cover" src={dp} alt="User profile picture" />
+                        <div className="absolute inset-0 bg-gray-600/50 flex items-center justify-center text-white text-2xl font-medium cursor-pointer opacity-0 hover:opacity-100 transition-opacity duration-200">
+                            +
+                        </div>
+                    </div>
                     <div className="flex flex-col min-[450px]:flex-row w-full gap-3 sm:gap-3.5">
                         <input
                             type="text"
