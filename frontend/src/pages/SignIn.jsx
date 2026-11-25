@@ -1,5 +1,6 @@
 import { useState } from "react"
-import { useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom"
+import axios from "../config/axiosConfig"
 
 const SignIn = () => {
     const navigate = useNavigate();
@@ -11,10 +12,14 @@ const SignIn = () => {
         <div className="min-h-screen w-full bg-[#ECFDF5] flex items-center justify-center p-4 sm:p-6 md:p-8">
             <div className="w-full max-w-md sm:max-w-125 bg-[#FFFFFF] rounded-2xl shadow-sm flex items-center justify-center flex-col gap-6 py-8 px-6 sm:py-10 sm:px-10">
                 <h1 className="text-[#064E3B] font-bold text-2xl sm:text-3xl text-center">Sign In</h1>
-                <form onSubmit={(e) => {
+                <form onSubmit={async (e) => {
                     e.preventDefault();
                     setEmail('');
                     setPassword('');
+                    const response = await axios.post('/signin', {
+                        email,
+                        password
+                    });
                 }} className="w-full flex flex-col gap-4">
                     <input
                         value={email}
