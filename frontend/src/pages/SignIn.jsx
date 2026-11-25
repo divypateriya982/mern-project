@@ -20,6 +20,7 @@ const SignIn = () => {
                         email,
                         password
                     });
+                    console.log(response);
                 }} className="w-full flex flex-col gap-4">
                     <input
                         value={email}

@@ -42,7 +42,7 @@ export const signup = async (req, res) => {
         });
 
         res.status(201).json({
-            message: 'You signup successfully',
+            message: 'Sign Up successfully',
             user: {
                 firstName,
                 lastName,
@@ -59,7 +59,7 @@ export const signup = async (req, res) => {
     }
 }
 
-export const login = async (req, res) => {
+export const signin = async (req, res) => {
     try {
         const { email, password } = req.body;
 
@@ -98,7 +98,7 @@ export const login = async (req, res) => {
         });
 
         res.status(200).json({
-            message: "Login successfully",
+            message: "Sign In successfully",
             user: {
                 firstName: user.firstName,
                 lastName: user.lastName,
@@ -115,12 +115,12 @@ export const login = async (req, res) => {
     }
 }
 
-export const logout = async (req, res) => {
+export const signout = async (req, res) => {
     try {
         res.clearCookie('token');
 
         res.status(200).json({
-            message: 'Logout successfully'
+            message: 'Sign Out successfully'
         });
 
     } catch (error) {
