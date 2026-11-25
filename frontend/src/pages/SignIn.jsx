@@ -16,11 +16,15 @@ const SignIn = () => {
                     e.preventDefault();
                     setEmail('');
                     setPassword('');
-                    const response = await axios.post('/signin', {
-                        email,
-                        password
-                    });
-                    console.log(response);
+                    try {
+                        const response = await axios.post('/api/auth/signin', {
+                            email,
+                            password
+                        });
+                        console.log(response.config.data);
+                    } catch (error) {
+                        alert(error.response.data.message);
+                    }
                 }} className="w-full flex flex-col gap-4">
                     <input
                         value={email}
@@ -31,7 +35,7 @@ const SignIn = () => {
                         className="w-full py-2 sm:py-2.5 px-3 sm:px-3.5 rounded-xl text-emerald-950 placeholder:text-emerald-700/70 border border-gray-300 focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100 outline-none transition-all duration-200 text-sm sm:text-base" />
                     <input
                         value={password}
-                        onChange={(e) => setEmail(e.target.value)}
+                        onChange={(e) => setPassword(e.target.value)}
                         type="password"
                         name="password"
                         placeholder="Password"

@@ -29,8 +29,12 @@ const SignUp = () => {
                 <form onSubmit={async (e) => {
                     e.preventDefault();
                     setFormData(initialState);
-                    const response = await axios.post('/signup', formData);
-                    console.log(response);
+                    try {
+                        const response = await axios.post('/api/auth/signup', formData);
+                        console.log(response.config.data);
+                    } catch (error) {
+                        alert(error.response.data.message);
+                    }
                 }} className="w-full flex flex-col gap-4 items-center justify-center">
                     <div className="w-24 h-24 sm:w-28 sm:h-28 rounded-full border-2 border-gray-400 overflow-hidden relative shrink-0">
                         <img className="w-full h-full object-cover" src={dp} alt="User profile picture" />
