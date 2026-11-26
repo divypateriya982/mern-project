@@ -22,7 +22,7 @@ const SignUp = () => {
 
     const [frontendImage, setFrontendImage] = useState(dp);
     const [backendImage, setBackendImage] = useState(null);
-    const handleFile = (e) => {
+    const handleFileChange = (e) => {
         const file = e.target.files[0];
         setBackendImage(file);
         const imageURL = URL.createObjectURL(file);
@@ -44,7 +44,8 @@ const SignUp = () => {
                         alert(error.response.data.message);
                     }
                 }} className="w-full flex flex-col gap-4 items-center justify-center">
-                    <input onChange={handleFile} type="file" accept='image/*' hidden ref={file} />
+                    <input type="file" name="" id="" />
+                    <input onChange={handleFileChange} type="file" accept='image/*' hidden ref={file} />
                     <div className="w-24 h-24 sm:w-28 sm:h-28 rounded-full border-2 border-gray-400 overflow-hidden relative shrink-0">
                         <img className="w-full h-full object-cover" src={frontendImage} alt="User profile picture" />
                         <div onClick={() => file.current.click()} className="absolute inset-0 bg-gray-600/50 flex items-center justify-center text-white text-2xl font-medium cursor-pointer opacity-0 hover:opacity-100 transition-opacity duration-200">
