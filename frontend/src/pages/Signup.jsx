@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import dp from '../assets/user_dp.jpg'
 import { useNavigate } from 'react-router-dom'
 import axios from '../config/axiosConfig'
@@ -6,6 +6,7 @@ import axios from '../config/axiosConfig'
 const SignUp = () => {
     const navigate = useNavigate();
 
+    const file = useRef(null)
     const initialState = {
         firstName: "",
         lastName: "",
@@ -13,12 +14,19 @@ const SignUp = () => {
         email: "",
         password: ""
     }
-
     const [formData, setFormData] = useState(initialState);
-
     const handleChange = (e) => {
         const { name, value } = e.target;
         setFormData((prev) => ({ ...prev, [name]: value }));
+    }
+
+    const [frontendImage, setFrontendImage] = useState(dp);
+    const [backendImage, setBackendImage] = useState(null);
+    const handleFile = (e) => {
+        const file = e.target.files[0];
+        setBackendImage(file);
+        const imageURL = URL.createObjectURL(file);
+        setFrontendImage(imageURL);
     }
 
     return (
@@ -36,9 +44,10 @@ const SignUp = () => {
                         alert(error.response.data.message);
                     }
                 }} className="w-full flex flex-col gap-4 items-center justify-center">
+                    <input onChange={handleFile} type="file" accept='image/*' hidden ref={file} />
                     <div className="w-24 h-24 sm:w-28 sm:h-28 rounded-full border-2 border-gray-400 overflow-hidden relative shrink-0">
-                        <img className="w-full h-full object-cover" src={dp} alt="User profile picture" />
-                        <div className="absolute inset-0 bg-gray-600/50 flex items-center justify-center text-white text-2xl font-medium cursor-pointer opacity-0 hover:opacity-100 transition-opacity duration-200">
+                        <img className="w-full h-full object-cover" src={frontendImage} alt="User profile picture" />
+                        <div onClick={() => file.current.click()} className="absolute inset-0 bg-gray-600/50 flex items-center justify-center text-white text-2xl font-medium cursor-pointer opacity-0 hover:opacity-100 transition-opacity duration-200">
                             +
                         </div>
                     </div>
