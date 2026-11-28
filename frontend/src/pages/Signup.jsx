@@ -12,40 +12,46 @@ const SignUp = () => {
         lastName: "",
         username: "",
         email: "",
-        password: ""
+        password: "",
+        backendImage: null
     }
-    const [formData, setFormData] = useState(initialState);
+    const [data, setData] = useState(initialState);
+    const [frontendImage, setFrontendImage] = useState(dp);
     const handleChange = (e) => {
         const { name, value } = e.target;
-        setFormData((prev) => ({ ...prev, [name]: value }));
-    }
-
-    const [frontendImage, setFrontendImage] = useState(dp);
-    const [backendImage, setBackendImage] = useState(null);
-    const handleFileChange = (e) => {
-        const file = e.target.files[0];
-        setBackendImage(file);
-        const imageURL = URL.createObjectURL(file);
-        setFrontendImage(imageURL);
+        setData((prev) => ({ ...prev, [name]: value }));
     }
 
     return (
         <div className="min-h-screen w-full bg-[#ECFDF5] flex items-center justify-center p-4 sm:p-6 md:p-8">
             <div className="w-full max-w-md sm:max-w-125 bg-[#FFFFFF] rounded-2xl shadow-sm flex items-center justify-center flex-col gap-6 py-8 px-6 sm:py-10 sm:px-10">
                 <h1 className="text-[#064E3B] font-bold text-2xl sm:text-3xl text-center">Sign Up</h1>
-
                 <form onSubmit={async (e) => {
                     e.preventDefault();
-                    setFormData(initialState);
                     try {
+                        const formData = new FormData();
+                        formData.append("firstName", data.firstName);
+                        formData.append("lastName", data.lastName);
+                        formData.append("username", data.username);
+                        formData.append("email", data.email);
+                        formData.append("password", data.password);
+                        if (backendImage) {
+                            formData.append("profileImage", data.backendImage);
+                        }
                         const response = await axios.post('/api/auth/signup', formData);
                         console.log(response.config.data);
                     } catch (error) {
                         alert(error.response.data.message);
                     }
+                    setData(initialState);
                 }} className="w-full flex flex-col gap-4 items-center justify-center">
                     <input type="file" name="" id="" />
-                    <input onChange={handleFileChange} type="file" accept='image/*' hidden ref={file} />
+                    <input onChange={(e) => {
+                        const file = e.target.files[0];
+                        setData((prev => ({ ...prev, backendImage: file })));
+                        const imageURL = URL.createObjectURL(file);
+                        setFrontendImage(imageURL);
+                    }} type="file" accept='image/*' hidden ref={file} />
                     <div className="w-24 h-24 sm:w-28 sm:h-28 rounded-full border-2 border-gray-400 overflow-hidden relative shrink-0">
                         <img className="w-full h-full object-cover" src={frontendImage} alt="User profile picture" />
                         <div onClick={() => file.current.click()} className="absolute inset-0 bg-gray-600/50 flex items-center justify-center text-white text-2xl font-medium cursor-pointer opacity-0 hover:opacity-100 transition-opacity duration-200">
@@ -54,14 +60,14 @@ const SignUp = () => {
                     </div>
                     <div className="flex flex-col min-[450px]:flex-row w-full gap-3 sm:gap-3.5">
                         <input
-                            value={formData.firstName}
+                            value={data.firstName}
                             onChange={handleChange}
                             type="text"
                             name="firstName"
                             placeholder="First name"
                             className="w-full flex-1 py-2 sm:py-2.5 px-3 sm:px-3.5 rounded-xl text-emerald-950 placeholder:text-emerald-700/70 border border-gray-300 focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100 outline-none transition-all duration-200 text-sm sm:text-base" />
                         <input
-                            value={formData.lastName}
+                            value={data.lastName}
                             onChange={handleChange}
                             type="text"
                             name="lastName"
@@ -69,21 +75,21 @@ const SignUp = () => {
                             className="w-full flex-1 py-2 sm:py-2.5 px-3 sm:px-3.5 rounded-xl text-emerald-950 placeholder:text-emerald-700/70 border border-gray-300 focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100 outline-none transition-all duration-200 text-sm sm:text-base" />
                     </div>
                     <input
-                        value={formData.username}
+                        value={data.username}
                         onChange={handleChange}
                         type="text"
                         name="username"
                         placeholder="Username"
                         className="w-full py-2 sm:py-2.5 px-3 sm:px-3.5 rounded-xl text-emerald-950 placeholder:text-emerald-700/70 border border-gray-300 focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100 outline-none transition-all duration-200 text-sm sm:text-base" />
                     <input
-                        value={formData.email}
+                        value={data.email}
                         onChange={handleChange}
                         type="email"
                         name="email"
                         placeholder="Email"
                         className="w-full py-2 sm:py-2.5 px-3 sm:px-3.5 rounded-xl text-emerald-950 placeholder:text-emerald-700/70 border border-gray-300 focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100 outline-none transition-all duration-200 text-sm sm:text-base" />
                     <input
-                        value={formData.password}
+                        value={data.password}
                         onChange={handleChange}
                         type="password"
                         name="password"
