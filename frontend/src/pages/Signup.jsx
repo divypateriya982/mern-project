@@ -6,7 +6,8 @@ import axios from '../config/axiosConfig'
 const SignUp = () => {
     const navigate = useNavigate();
 
-    const file = useRef(null)
+    const file = useRef(null);
+    const previewUrl = useRef(null);
     const initialState = {
         firstName: "",
         lastName: "",
@@ -35,26 +36,39 @@ const SignUp = () => {
                         formData.append("username", data.username);
                         formData.append("email", data.email);
                         formData.append("password", data.password);
-                        if (backendImage) {
+                        if (data.backendImage) {
                             formData.append("profileImage", data.backendImage);
                         }
                         const response = await axios.post('/api/auth/signup', formData);
                         console.log(response.config.data);
+
+                        if (previewUrl.current) {
+                            URL.revokeObjectURL(previewUrl.current);
+                            previewUrl.current = null;
+                        }
+                        setData(initialState);
+                        setFrontendImage(dp);
+                        if (file.current) file.current.value = '';
                     } catch (error) {
                         alert(error.response.data.message);
                     }
-                    setData(initialState);
                 }} className="w-full flex flex-col gap-4 items-center justify-center">
-                    <input type="file" name="" id="" />
                     <input onChange={(e) => {
-                        const file = e.target.files[0];
-                        setData((prev => ({ ...prev, backendImage: file })));
-                        const imageURL = URL.createObjectURL(file);
+                        const selectedfile = e.target.files?.[0];
+                        if (!selectedfile) return;
+
+                        if (previewUrl.current) {
+                            URL.revokeObjectURL(previewUrl.current);
+                        }
+                        const imageURL = URL.createObjectURL(selectedfile);
+                        previewUrl.current = imageURL;
+
+                        setData((prev => ({ ...prev, backendImage: selectedfile })));
                         setFrontendImage(imageURL);
                     }} type="file" accept='image/*' hidden ref={file} />
                     <div className="w-24 h-24 sm:w-28 sm:h-28 rounded-full border-2 border-gray-400 overflow-hidden relative shrink-0">
                         <img className="w-full h-full object-cover" src={frontendImage} alt="User profile picture" />
-                        <div onClick={() => file.current.click()} className="absolute inset-0 bg-gray-600/50 flex items-center justify-center text-white text-2xl font-medium cursor-pointer opacity-0 hover:opacity-100 transition-opacity duration-200">
+                        <div onClick={() => file.current?.click()} className="absolute inset-0 bg-gray-600/50 flex items-center justify-center text-white text-2xl font-medium cursor-pointer opacity-0 hover:opacity-100 transition-opacity duration-200">
                             +
                         </div>
                     </div>
@@ -65,6 +79,7 @@ const SignUp = () => {
                             type="text"
                             name="firstName"
                             placeholder="First name"
+                            required
                             className="w-full flex-1 py-2 sm:py-2.5 px-3 sm:px-3.5 rounded-xl text-emerald-950 placeholder:text-emerald-700/70 border border-gray-300 focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100 outline-none transition-all duration-200 text-sm sm:text-base" />
                         <input
                             value={data.lastName}
@@ -72,6 +87,7 @@ const SignUp = () => {
                             type="text"
                             name="lastName"
                             placeholder="Last name"
+                            required
                             className="w-full flex-1 py-2 sm:py-2.5 px-3 sm:px-3.5 rounded-xl text-emerald-950 placeholder:text-emerald-700/70 border border-gray-300 focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100 outline-none transition-all duration-200 text-sm sm:text-base" />
                     </div>
                     <input
@@ -80,6 +96,7 @@ const SignUp = () => {
                         type="text"
                         name="username"
                         placeholder="Username"
+                        required
                         className="w-full py-2 sm:py-2.5 px-3 sm:px-3.5 rounded-xl text-emerald-950 placeholder:text-emerald-700/70 border border-gray-300 focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100 outline-none transition-all duration-200 text-sm sm:text-base" />
                     <input
                         value={data.email}
@@ -87,6 +104,7 @@ const SignUp = () => {
                         type="email"
                         name="email"
                         placeholder="Email"
+                        required
                         className="w-full py-2 sm:py-2.5 px-3 sm:px-3.5 rounded-xl text-emerald-950 placeholder:text-emerald-700/70 border border-gray-300 focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100 outline-none transition-all duration-200 text-sm sm:text-base" />
                     <input
                         value={data.password}
@@ -94,6 +112,7 @@ const SignUp = () => {
                         type="password"
                         name="password"
                         placeholder="Password"
+                        required
                         className="w-full py-2 sm:py-2.5 px-3 sm:px-3.5 rounded-xl text-emerald-950 placeholder:text-emerald-700/70 border border-gray-300 focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100 outline-none transition-all duration-200 text-sm sm:text-base" />
                     <button
                         type="submit"
